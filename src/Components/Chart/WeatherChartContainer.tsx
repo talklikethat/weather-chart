@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ItemData } from '../../types';
-import Chart from './Chart';
+import MultiAxesChart from './MultiAxesChart';
 import { TextLoader } from '../UI/Loaders/Loader';
-import './Chart.css';
+import './WeatherChartContainer.css';
 
 interface Props {
     data: ItemData[];
@@ -12,8 +12,12 @@ interface Props {
 }
 
 const WeatherChartContainer: React.FC<Props> = (props: Props) => {
-    const { data, data2, temperatureIsSelected, precipitationIsSelected } =
-        props;
+    const {
+        data,
+        data2,
+        temperatureIsSelected = true,
+        precipitationIsSelected = true,
+    } = props;
     const [loading, setLoading] = useState<boolean>(true);
     const [width, setWidth] = useState<number>(0);
     const [height, setHeight] = useState<number>(0);
@@ -36,13 +40,19 @@ const WeatherChartContainer: React.FC<Props> = (props: Props) => {
             {loading ? (
                 <TextLoader />
             ) : (
-                <Chart
+                <MultiAxesChart
                     width={width}
                     height={height}
-                    precipitationIsSelected={precipitationIsSelected}
-                    temperatureIsSelected={temperatureIsSelected}
-                    data={data}
-                    data2={data2}
+                    chart={{
+                        title: 'Температура',
+                        data,
+                        isVisible: temperatureIsSelected,
+                    }}
+                    chart2={{
+                        title: 'Осадки',
+                        data: data2,
+                        isVisible: precipitationIsSelected,
+                    }}
                 />
             )}
         </div>

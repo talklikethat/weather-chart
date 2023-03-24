@@ -4,10 +4,16 @@ import { ItemData } from '../../types';
 interface Props {
     width?: number;
     height?: number;
-    data: ItemData[]; // data for first chart
-    data2: ItemData[]; // data for second chart
-    temperatureIsSelected?: boolean;
-    precipitationIsSelected?: boolean;
+    chart: {
+        title: string;
+        data: ItemData[];
+        isVisible: boolean;
+    };
+    chart2: {
+        title: string;
+        data: ItemData[];
+        isVisible: boolean;
+    };
 }
 
 /**
@@ -15,50 +21,39 @@ interface Props {
  * @param props
  * @constructor
  */
-const Chart: React.FC<Props> = (props: Props) => {
-    const {
-        data,
-        data2,
-        width = 800,
-        height = 600,
-        temperatureIsSelected = true,
-        precipitationIsSelected = true,
-    } = props;
+const MultiAxesChart: React.FC<Props> = (props: Props) => {
+    const { width = 800, height = 600, chart, chart2 } = props;
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const drawChart = (
-        precipitationIsVisible = true,
-        temperatureIsVisible = true,
-    ) => {
+    const drawChart = () => {
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d');
 
-        if (ctx && canvas && !!data.length && !!data2.length) {
+        if (ctx && canvas && !!chart?.data.length && !!chart2?.data.length) {
             // clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const width = canvas.width;
             const height = canvas.height;
             const margin = 50;
 
-            // get min and max temperatures
-            const temperatures = data.map((item) => item.v);
+            // get min and max of first chart
+            const values = chart.data.map((item) => item.v);
             // add two degrees above and below, so there is "air" around the chart
-            const minTemp = Math.min(...temperatures) - 2;
-            const maxTemp = Math.max(...temperatures) + 2;
+            const minValue = Math.min(...values) - 2;
+            const maxValue = Math.max(...values) + 2;
 
-            // get min and max precipitation
-            const precipitations = data2.map((item) => item.v);
-            // add two degrees above and below, so there is "air" around the chart
-            const minPre = Math.min(...precipitations);
-            const maxPre = Math.max(...precipitations);
+            // get min and max of second chart
+            const values2 = chart2.data.map((item) => item.v);
+            const minValue2 = Math.min(...values2);
+            const maxValue2 = Math.max(...values2);
 
             // get min and max dates
-            const minDate = new Date(data[0].t);
-            const maxDate = new Date(data[data.length - 1].t);
+            const minDate = new Date(chart.data[0].t);
+            const maxDate = new Date(chart.data[chart.data.length - 1].t);
 
             // get ranges for both axes
             const xRange = maxDate.getTime() - minDate.getTime();
-            const yRange = maxTemp - minTemp;
-            const yRange2 = maxPre - minPre;
+            const yRange = maxValue - minValue;
+            const yRange2 = maxValue2 - minValue2;
 
             // get scales for both axes
             const xScale = (width - margin * 2) / xRange;
@@ -75,8 +70,8 @@ const Chart: React.FC<Props> = (props: Props) => {
             // align to the right for ease of comparison
             ctx.textAlign = 'right';
             for (let i = 0; i <= numLabels; i++) {
-                const temp = minTemp + i * yStep;
-                const y = height - margin - (temp - minTemp) * yScale;
+                const temp = minValue + i * yStep;
+                const y = height - margin - (temp - minValue) * yScale;
                 // FIX: after first draw labels change position on Y axis
                 ctx.fillText(`${temp.toFixed(1)} °C`, 40, y - 4);
                 ctx.beginPath();
@@ -88,8 +83,8 @@ const Chart: React.FC<Props> = (props: Props) => {
 
             // draw label for second Y axis
             for (let i = 0; i <= numLabels; i++) {
-                const temp2 = minPre + i * yStep2;
-                const y2 = height - margin - (temp2 - minPre) * yScale2;
+                const temp2 = minValue2 + i * yStep2;
+                const y2 = height - margin - (temp2 - minValue2) * yScale2;
                 // FIX: after first draw labels change position on Y axis
                 ctx.fillText(`${temp2.toFixed(1)} мм`, width - 5, y2 - 4);
                 ctx.beginPath();
@@ -142,17 +137,17 @@ const Chart: React.FC<Props> = (props: Props) => {
             ctx.lineTo(margin, height - margin);
             ctx.stroke();
 
-            if (temperatureIsVisible) {
+            if (chart.isVisible) {
                 // begin draw line of chart
                 ctx.beginPath();
 
-                data.forEach((item, i) => {
+                chart.data.forEach((item, i) => {
                     // find relative position of point
                     const x =
                         margin +
                         (new Date(item.t).getTime() - minDate.getTime()) *
                             xScale;
-                    const y = height - margin - (item.v - minTemp) * yScale;
+                    const y = height - margin - (item.v - minValue) * yScale;
 
                     // if it is first point, move to it
                     if (i === 0) {
@@ -171,17 +166,17 @@ const Chart: React.FC<Props> = (props: Props) => {
                 ctx.lineTo(margin, height - margin);
             }
 
-            if (precipitationIsVisible) {
+            if (chart2.isVisible) {
                 // begin draw line of chart
                 ctx.beginPath();
 
-                data2.forEach((item, i) => {
+                chart2.data.forEach((item, i) => {
                     // find relative position of point
                     const x =
                         margin +
                         (new Date(item.t).getTime() - minDate.getTime()) *
                             xScale;
-                    const y = height - margin - (item.v - minPre) * yScale2;
+                    const y = height - margin - (item.v - minValue2) * yScale2;
 
                     // if it is first point, move to it
                     if (i === 0) {
@@ -212,7 +207,7 @@ const Chart: React.FC<Props> = (props: Props) => {
             ctx.textAlign = 'left';
 
             // Температура
-            ctx.fillText('Температура', 24, 16);
+            ctx.fillText(chart.title, 24, 16);
             ctx.beginPath();
             ctx.moveTo(8, 20);
             ctx.lineTo(20, 20);
@@ -220,7 +215,7 @@ const Chart: React.FC<Props> = (props: Props) => {
             ctx.stroke();
 
             // Осадки
-            ctx.fillText('Осадки', 136, 16);
+            ctx.fillText(chart2.title, 136, 16);
             ctx.beginPath();
             ctx.moveTo(120, 20);
             ctx.lineTo(132, 20);
@@ -230,10 +225,10 @@ const Chart: React.FC<Props> = (props: Props) => {
     };
 
     useEffect(() => {
-        drawChart(precipitationIsSelected, temperatureIsSelected);
+        drawChart();
         drawLegend();
-    }, [data, data2, precipitationIsSelected, temperatureIsSelected]);
+    }, [chart, chart2]);
 
     return <canvas ref={canvasRef} width={width} height={height} />;
 };
-export default Chart;
+export default MultiAxesChart;
