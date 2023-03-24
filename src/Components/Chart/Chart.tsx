@@ -10,6 +10,11 @@ interface Props {
     precipitationIsSelected?: boolean;
 }
 
+/**
+ * Chart with two lines
+ * @param props
+ * @constructor
+ */
 const Chart: React.FC<Props> = (props: Props) => {
     const {
         data,
@@ -36,7 +41,6 @@ const Chart: React.FC<Props> = (props: Props) => {
 
             // get min and max temperatures
             const temperatures = data.map((item) => item.v);
-            const dates = data.map((item) => item.t);
             // add two degrees above and below, so there is "air" around the chart
             const minTemp = Math.min(...temperatures) - 2;
             const maxTemp = Math.max(...temperatures) + 2;
@@ -66,7 +70,7 @@ const Chart: React.FC<Props> = (props: Props) => {
             const yStep = yRange / numLabels;
             const yStep2 = yRange2 / numLabels;
             ctx.font = '10px Inter, Avenir, Helvetica, Arial, sans-serif';
-            ctx.fillStyle = '#000000';
+            ctx.fillStyle = '#001219';
             ctx.lineWidth = 1;
             // align to the right for ease of comparison
             ctx.textAlign = 'right';
@@ -124,7 +128,7 @@ const Chart: React.FC<Props> = (props: Props) => {
 
             // draw X and Y axis
             ctx.beginPath();
-            ctx.strokeStyle = '#000000';
+            ctx.strokeStyle = '#001219';
             ctx.moveTo(margin, margin);
             ctx.lineTo(margin, height - margin);
             ctx.lineTo(width - margin, height - margin);
@@ -132,7 +136,7 @@ const Chart: React.FC<Props> = (props: Props) => {
 
             // draw second Y axis
             ctx.beginPath();
-            ctx.strokeStyle = '#000000';
+            ctx.strokeStyle = '#001219';
             ctx.moveTo(width - margin, margin);
             ctx.lineTo(width - margin, height - margin);
             ctx.lineTo(margin, height - margin);
@@ -159,7 +163,7 @@ const Chart: React.FC<Props> = (props: Props) => {
                 });
 
                 // end draw line of chart
-                ctx.strokeStyle = 'green';
+                ctx.strokeStyle = '#fb8500';
                 ctx.lineWidth = 1;
                 ctx.stroke();
                 // ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
@@ -188,7 +192,7 @@ const Chart: React.FC<Props> = (props: Props) => {
                 });
 
                 // end draw line of chart
-                ctx.strokeStyle = 'blue';
+                ctx.strokeStyle = '#457b9d';
                 ctx.lineWidth = 1;
                 ctx.stroke();
                 // ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
@@ -198,9 +202,37 @@ const Chart: React.FC<Props> = (props: Props) => {
         }
     };
 
+    const drawLegend = () => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext('2d');
+        if (ctx) {
+            ctx.font = '12px Inter, Avenir, Helvetica, Arial, sans-serif';
+            ctx.fillStyle = '#001219';
+            ctx.lineWidth = 12;
+            ctx.textAlign = 'left';
+
+            // Температура
+            ctx.fillText('Температура', 24, 16);
+            ctx.beginPath();
+            ctx.moveTo(8, 20);
+            ctx.lineTo(20, 20);
+            ctx.strokeStyle = '#fb8500';
+            ctx.stroke();
+
+            // Осадки
+            ctx.fillText('Осадки', 136, 16);
+            ctx.beginPath();
+            ctx.moveTo(120, 20);
+            ctx.lineTo(132, 20);
+            ctx.strokeStyle = '#457b9d';
+            ctx.stroke();
+        }
+    };
+
     useEffect(() => {
         drawChart(precipitationIsSelected, temperatureIsSelected);
-    }, [data, precipitationIsSelected, temperatureIsSelected]);
+        drawLegend();
+    }, [data, data2, precipitationIsSelected, temperatureIsSelected]);
 
     return <canvas ref={canvasRef} width={width} height={height} />;
 };

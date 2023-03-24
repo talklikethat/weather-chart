@@ -19,8 +19,9 @@ const WeatherChartContainer: React.FC<Props> = (props: Props) => {
     const [height, setHeight] = useState<number>(0);
 
     useEffect(() => {
-        if (data.length) setLoading(false);
-    }, [data]);
+        // reset loading state when data from any of the charts is loaded
+        if (data.length || data2.length) setLoading(false);
+    }, [data, data2]);
 
     useEffect(() => {
         const container = document.querySelector('.weather-chart');
