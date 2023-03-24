@@ -161,7 +161,6 @@ const MultiAxesChart: React.FC<Props> = (props: Props) => {
                 ctx.strokeStyle = '#fb8500';
                 ctx.lineWidth = 1;
                 ctx.stroke();
-                // ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
                 ctx.lineTo(width - margin, height - margin);
                 ctx.lineTo(margin, height - margin);
             }
@@ -190,7 +189,6 @@ const MultiAxesChart: React.FC<Props> = (props: Props) => {
                 ctx.strokeStyle = '#457b9d';
                 ctx.lineWidth = 1;
                 ctx.stroke();
-                // ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
                 ctx.lineTo(width - margin, height - margin);
                 ctx.lineTo(margin, height - margin);
             }
@@ -206,7 +204,6 @@ const MultiAxesChart: React.FC<Props> = (props: Props) => {
             ctx.lineWidth = 12;
             ctx.textAlign = 'left';
 
-            // Температура
             ctx.fillText(chart.title, 24, 16);
             ctx.beginPath();
             ctx.moveTo(8, 20);
@@ -214,7 +211,6 @@ const MultiAxesChart: React.FC<Props> = (props: Props) => {
             ctx.strokeStyle = '#fb8500';
             ctx.stroke();
 
-            // Осадки
             ctx.fillText(chart2.title, 136, 16);
             ctx.beginPath();
             ctx.moveTo(120, 20);

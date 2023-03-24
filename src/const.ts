@@ -1,4 +1,3 @@
-// TODO: добавить сканирование директории data вместо явного прописывания названий таблиц
 export const STORE_NAMES = ['temperature', 'precipitation'] as const;
 
 // years for pickers before successful fetch data

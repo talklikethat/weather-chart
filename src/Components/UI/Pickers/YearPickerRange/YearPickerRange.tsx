@@ -29,8 +29,6 @@ function YearPickerRange(props: YearPickerRangeProps) {
     const onChange = (value: string, range: YearRange) => {
         const error = validateYears(value, range);
         setError(error);
-        // if (error) setError(error)
-        // };
         !error && props.onChange(value, range);
     };
 

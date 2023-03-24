@@ -59,7 +59,6 @@ function App() {
             // set initial states for pickers
             setSelectedStartYear(uniqueYears[0]);
             setSelectedEndYear(uniqueYears[uniqueYears.length - 1]);
-            // setSelectedEndYear(uniqueYears[0]);
             setUniqueYearsArray(uniqueYears);
         }
         if (!!precipitationStoreData?.data.length) {
