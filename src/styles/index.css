@@ -1,0 +1,31 @@
+:root {
+    font-family: var(--ff);
+    font-size: var(--fs);
+    line-height: var(--lh);
+    font-weight: var(--fw);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+    margin: 0;
+}
+
+.weather-archive {
+    margin: var(--margin);
+}
+
+.weather-archive__content {
+    display: flex;
+}
+
+.weather-archive__visual {
+    width: 100%;
+    margin-left: var(--margin);
+    margin-right: var(--margin);
+}

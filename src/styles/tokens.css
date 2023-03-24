@@ -1,0 +1,22 @@
+:root {
+    --padding-05x: 0.5em;
+    --padding: 1em;
+    --padding-2x: 2em;
+    --padding-3x: 3em;
+
+    --margin-05x: 0.5em;
+    --margin: 1em;
+    --margin-2x: 2em;
+    --margin-3x: 3em;
+
+    --fs: 16px;
+    --fs-small: 14px;
+    --ff: Inter, Avenir, Helvetica, Arial, sans-serif;
+    --lh: 24px;
+    --fw: 400;
+
+    --border-default: 1px solid #e0e0e0;
+
+    /*--color-primary: #1e88e5;*/
+    --color-error: #f44336;
+}

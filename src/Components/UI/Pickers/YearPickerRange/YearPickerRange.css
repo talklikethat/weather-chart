@@ -1,0 +1,23 @@
+.year-picker-range {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--margin-05x);
+}
+
+.year-picker-range .year-picker:first-of-type {
+    margin-right: var(--margin-05x);
+}
+
+.year-picker-range .year-picker:last-of-type {
+    margin-left: var(--margin-05x);
+    margin-right: var(--margin-05x);
+}
+
+.year-picker-range__error {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    line-height: 1.2em;
+    font-size: var(--fs-small);
+    color: var(--color-error);
+}

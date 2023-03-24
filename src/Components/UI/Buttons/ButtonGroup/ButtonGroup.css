@@ -1,0 +1,15 @@
+.button-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 1rem 0;
+    width: 100%;
+}
+
+.button-group--column {
+    flex-direction: column;
+}
+
+.button-group--column .button {
+    margin-bottom: var(--margin-05x);
+}

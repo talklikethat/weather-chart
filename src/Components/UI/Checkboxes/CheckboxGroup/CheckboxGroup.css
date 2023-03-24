@@ -1,0 +1,19 @@
+.checkbox-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 1em 0;
+    width: 100%;
+}
+
+.checkbox-group--column {
+    flex-direction: column;
+}
+
+.checkbox-group--bordered {
+    border: var(--border-default);
+}
+
+.checkbox-group--column .checkbox {
+    margin-bottom: var(--margin-05x);
+}

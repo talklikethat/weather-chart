@@ -1,0 +1,10 @@
+.chart {
+    position: relative;
+}
+
+.weather-chart {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: var(--border-default);
+}
